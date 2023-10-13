@@ -34,7 +34,7 @@ void welcomeScreen()
     cout << "\t\t\t\t\t\t\t\t\t\t||                                            ||\n";
     cout << "\t\t\t\t\t\t\t\t\t\t||      BUS RESERVATION SYSTEM MANAGEMENT     ||\n";
     cout << "\t\t\t\t\t\t\t\t\t\t||                                            ||\n";
-    cout << "\t\t\t\t\t\t\t\t\t\t||                    PROJECT                 ||\n";
+    cout << "\t\t\t\t\t\t\t\t\t\t||             -----PROJECT-----              ||\n";
     cout << "\t\t\t\t\t\t\t\t\t\t================================================\n\n\n";
 
     cout << "\t\t\t\t\t\t\t\t\t\t-------------------------------------------------\n";
