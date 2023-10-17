@@ -2,14 +2,15 @@
 #define TICKET_H            
 
 #include <iostream>
-#include<string.h>
+#include<string>
 
+using namespace std;
 
 // CLASS TICKET
 class Ticket
 {
 private:
-    char name[20], pnrNo[10], date[20];
+    string name, pnrNo, date;
 
 public:
     void generateTicket();
@@ -19,23 +20,23 @@ public:
     void editTicket();
     void showTicketsByPNR();
     void showTicketsByName();
-    void showTicketsByBus();
+    void showTiscketByBus();
     void showTicketsBySource();
     void showTicketsByDestination();
     void showAllTickets();
 
     // GETTERS
-    char *getName()
+    string getName()
     {
         return name;
     }
 
-    char *getPnrNo()
+    string getPnrNo()
     {
         return pnrNo;
     }
 
-    char *getDate()
+    string getDate()
     {
         return date;
     }
@@ -44,7 +45,7 @@ public:
     void setName(char *n)
     {
         if (n && n[0])
-            strcpy(name, n);
+           name= n;
     }
 };
 #endif // !TICKET_H
