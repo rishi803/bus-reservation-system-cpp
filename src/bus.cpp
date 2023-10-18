@@ -137,3 +137,84 @@ void Bus::viewBusDetails()
         busFileStream.close();
     }
 }
+
+// EDIT BUS
+
+void Bus::editBus()
+{
+    system("cls");
+
+    string bNo;
+    int chk = 0;
+
+    fstream busFileStream, tempFileStream;
+
+    printHeading("EDIT BUS");
+    cout << "\n\t\t\t\t\t\t\t\t\t\tEnter Bus Number:-> ";
+    cin.ignore();
+    getline(cin,bNo);
+
+    busFileStream.open("buses.dat", ios::in | ios::app | ios::binary);
+
+    if (!busFileStream)
+    {
+        cout << "\n\t\t\t\t\t\t\t\t\t\tCan't Open File...!!\n";
+    }
+
+    else
+    {
+        tempFileStream.open("temp.dat", ios::out | ios::app | ios::binary);
+
+        busFileStream.read((char *)this, sizeof(*this));
+        while (!busFileStream.eof())
+        {
+            if (getBusNo() == bNo)
+            {
+                system("cls");
+                printHeading("EDIT BUS");
+
+                showBusDetails();
+                string s, d, sTime, dTime;
+                double fare;
+                cout << "\n\t\t\t\t\t\t\t\t\t\tEnter Source:-> ";
+                getline(cin,s);
+                cout << "\n\t\t\t\t\t\t\t\t\t\tEnter Destination:-> ";
+                getline(cin,d);
+                cout << "\n\t\t\t\t\t\t\t\t\t\tEnter Source Time:-> ";
+                getline(cin,sTime);
+                cout << "\n\t\t\t\t\t\t\t\t\t\tEnter Destination Time:-> ";
+                getline(cin,dTime);
+                cout << "\n\t\t\t\t\t\t\t\t\t\tEnter Bus Fare:-> ";
+                cin.ignore();
+                cin >> fare;
+                setSource(s);
+                setDestination(d);
+                setSourceTime(sTime);
+                setDestinationTime(dTime);
+                setBusFare(fare);
+                tempFileStream.write((char *)this, sizeof(*this));
+
+                chk = 1;
+            }
+            else
+            {
+                tempFileStream.write((char *)this, sizeof(*this));
+            }
+            busFileStream.read((char *)this, sizeof(*this));
+        }
+
+        if (chk == 1)
+        {
+            cout << "\n\t\t\t\t\t\t\t\t\t\tBus Updated Successfully...!!\n";
+        }
+        else
+        {
+            cout << "\n\t\t\t\t\t\t\t\t\t\tBus Not Found...!!\n";
+        }
+
+        busFileStream.close();
+        tempFileStream.close();
+        remove("buses.dat");
+        rename("temp.dat", "buses.dat");
+    }
+}
