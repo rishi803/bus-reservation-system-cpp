@@ -222,7 +222,9 @@ void adminMenu()
             break;
 
         case 2:
-            
+            b.showAllBus();
+            system("pause");
+            break;
 
         case 3:
             

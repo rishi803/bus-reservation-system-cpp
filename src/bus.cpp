@@ -90,3 +90,50 @@ void Bus::showAllBus()
         busFileStream.close();
     }
 }
+
+// VIEW selected BUS INFO
+
+void Bus::viewBusDetails()
+{
+    system("cls");
+    
+
+    string busNo;
+    int chk = 0;
+    fstream busFileStream;
+
+    printHeading("VIEW BUS INFO");
+    cout << "\n\t\t\t\t\t\t\t\t\t\tEnter Bus Number:-> ";
+    cin.ignore();
+    getline(cin,busNo);
+
+    system("cls");
+    printHeading("BUS INFO");
+
+    busFileStream.open("buses.dat", ios::in | ios::app | ios::binary);
+    if (!busFileStream)
+    {
+        cout << "\n\t\t\t\t\t\t\t\t\t\tCan't Open File...!!\n";
+    }
+
+    else
+    {
+        // Bus busRecord;
+
+        busFileStream.read((char *)this, sizeof(*this));
+        while (!busFileStream.eof())
+        {
+            if (getBusNo() == busNo)
+            {
+                showBusDetails();
+                chk = 1;
+            }
+            busFileStream.read((char *)this, sizeof(*this));
+        }
+        if (chk == 0)
+        {
+            cout << "\n\t\t\t\t\t\t\t\t\t\tBus Not Found...!!\n";
+        }
+        busFileStream.close();
+    }
+}
