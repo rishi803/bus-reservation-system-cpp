@@ -192,13 +192,13 @@ void Bus::editBus()
                 setSourceTime(sTime);
                 setDestinationTime(dTime);
                 setBusFare(fare);
-                tempFileStream.write((char *)this, sizeof(*this));
+                tempFileStream.write((char *)this, sizeof(*this)); // if given bus that user want to modify then store this updated bus details
 
                 chk = 1;
             }
             else
             {
-                tempFileStream.write((char *)this, sizeof(*this));
+                tempFileStream.write((char *)this, sizeof(*this)); // if bus is not that user want copy it as it is in temp file
             }
             busFileStream.read((char *)this, sizeof(*this));
         }
@@ -210,6 +210,61 @@ void Bus::editBus()
         else
         {
             cout << "\n\t\t\t\t\t\t\t\t\t\tBus Not Found...!!\n";
+        }
+
+        busFileStream.close();
+        tempFileStream.close();
+        remove("buses.dat");
+        rename("temp.dat", "buses.dat");
+    }
+}
+
+// DELETE BUS
+void Bus::deleteBus()
+{
+    system("cls");
+
+    string bNo;
+    int chk = 0;
+    fstream busFileStream, tempFileStream;
+
+    printHeading("DELETE BUS");
+    cout << "\n\t\t\t\t\t\t\t\t\t\tEnter Bus No:-> ";
+    cin.ignore();
+    getline(cin,bNo);
+
+    busFileStream.open("buses.dat", ios::in | ios::app | ios::binary);
+
+    if (!busFileStream)
+    {
+        cout << "\n\\t\t\t\t\t\t\t\t\t\tCan't Open File...!!";
+        system("pause");
+    }
+
+    else
+    {
+        tempFileStream.open("temp.dat", ios::out | ios::app | ios::binary);
+        busFileStream.read((char *)this, sizeof(*this));
+        while (!busFileStream.eof())
+        {
+            if (getBusNo() != bNo)
+            {
+                tempFileStream.write((char *)this, sizeof(*this));  // buses which is not matching with given bus by user, copy it in temp file
+            }
+            else
+            {
+                chk = 1;         // given bus is found and is not included in temp file
+            }
+            busFileStream.read((char *)this, sizeof(*this));
+        }
+
+        if (chk == 0)
+        {
+            cout << "\n\t\t\t\t\t\t\t\t\t\tBus Not Found...!!\n";
+        }
+        else
+        {
+            cout << "\n\t\t\t\t\t\t\t\t\t\tBus Deleted...!!\n";
         }
 
         busFileStream.close();

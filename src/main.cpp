@@ -240,12 +240,17 @@ void adminMenu()
             break;
 
         case 7:
-           
+            b.viewBusDetails();
+            system("pause");
+            break;
 
         case 8:
-           
+            b.editBus();
+            system("pause");
+            break;
+
         case 9:
-            
+          
 
         case 10:
             system("cls");
