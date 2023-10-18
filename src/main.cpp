@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string.h>
 
+#include "bus.cpp"
+#include"utils.h"
 
 
 using namespace std;
@@ -177,7 +179,7 @@ void userMenu()
 void adminMenu()
 {
    
-
+    Bus b;
     int choice;
 
     while (1)
@@ -215,7 +217,9 @@ void adminMenu()
         switch (choice)
         {
         case 1:
-           
+            b.addBus();
+            system("pause");
+            break;
 
         case 2:
             
