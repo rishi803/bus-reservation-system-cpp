@@ -4,6 +4,8 @@
 #include <iostream>
 #include<string>
 
+#include "bus.h"
+
 using namespace std;
 
 // CLASS TICKET
@@ -11,9 +13,10 @@ class Ticket
 {
 private:
     string name, pnrNo, date;
+    Bus bus;
 
 public:
-    void generateTicket();
+    void generateTicket(string, Bus);
     void displayTicket();
     void bookTicket();
     void cancelTicket();
