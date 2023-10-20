@@ -45,9 +45,9 @@ public:
     }
 
     // SETTERS
-    void setName(char *n)
+    void setName(string &n)
     {
-        if (n && n[0])
+        // if (n && n[0])
            name= n;
     }
 };

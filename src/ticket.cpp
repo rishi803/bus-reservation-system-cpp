@@ -236,3 +236,69 @@ void Ticket::cancelTicket()
         }
     }
 }
+
+// EDIT TICKET
+void Ticket::editTicket()
+{
+    system("cls");
+
+    string pnr;
+    int chk = 0;
+
+    fstream ticketFileStream, tempFileStream;
+
+    printHeading("EDIT TICKET");
+    cout << "\n\t\t\t\t\t\t\t\t\t\tEnter PNR Number:-> ";
+    cin.ignore();
+    getline(cin,pnr);
+
+    ticketFileStream.open("tickets.dat", ios::in | ios::app | ios::binary);
+
+    if (!ticketFileStream)
+    {
+        cout << "\n\t\t\t\t\t\t\t\t\t\tCan't Open File...!!\n";
+    }
+
+    else
+    {
+        tempFileStream.open("temp.dat", ios::out | ios::app | ios::binary);
+
+        ticketFileStream.read((char *)this, sizeof(*this));
+        while (!ticketFileStream.eof())
+        {
+            if ((getPnrNo() == pnr))
+            {
+                system("cls");
+                printHeading("EDIT TICKET");
+
+                displayTicket();
+                string n;
+                cout << "\n\t\t\t\t\t\t\t\t\t\tEnter Passenger Name :-> ";
+                getline(cin,n);
+                setName(n);
+                tempFileStream.write((char *)this, sizeof(*this));
+
+                chk = 1;
+            }
+            else
+            {
+                tempFileStream.write((char *)this, sizeof(*this));
+            }
+            ticketFileStream.read((char *)this, sizeof(*this));
+        }
+
+        if (chk = 1)
+        {
+            cout << "\n\t\t\t\t\t\t\t\t\t\tTicket Updated Successfully...!!\n";
+        }
+        else
+        {
+            cout << "\n\t\t\t\t\t\t\t\t\t\tTicket Not Found...!!\n";
+        }
+
+        ticketFileStream.close();
+        tempFileStream.close();
+        remove("tickets.dat");
+        rename("temp.dat", "tickets.dat");
+    }
+}
