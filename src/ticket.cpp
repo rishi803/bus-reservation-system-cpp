@@ -159,3 +159,80 @@ void Ticket::bookTicket()
         busFileStream.close();
     }
 }
+
+// CANCEL TICKET
+void Ticket::cancelTicket()
+{
+    system("cls");
+
+    string pnr;
+    int chk = 0;
+
+    fstream busFileStream, ticketFileStream, tempFileStream, busTempFileStream;
+
+    printHeading("CANCEL TICKET");
+    cout << "\n\t\t\t\t\t\t\t\t\t\tEnter PNR Number:-> ";
+    cin.ignore();
+    getline(cin,pnr);
+
+    ticketFileStream.open("tickets.dat", ios::in | ios::app | ios::binary);
+    tempFileStream.open("temp.dat", ios::out | ios::app | ios::binary);
+
+    if (!ticketFileStream)
+    {
+        cout << "\n\t\t\t\t\t\t\t\t\t\tCan't Open File...!!\n";
+    }
+
+    else
+    {
+        ticketFileStream.read((char *)this, sizeof(*this));
+        while (!ticketFileStream.eof())
+        {
+            if ((getPnrNo() != pnr))
+            {
+                tempFileStream.write((char *)this, sizeof(*this));
+            }
+            else
+            {
+                Bus b;
+                busFileStream.open("buses.dat", ios::in | ios::app | ios::binary);
+                busTempFileStream.open("bustemp.dat", ios::out | ios::app | ios::binary);
+
+                busFileStream.read((char *)&b, sizeof(b));
+                while (!busFileStream.eof())
+                {
+                    if ((b.getBusNo() == bus.getBusNo()))
+                    {
+                        b.setCancelTicket();
+                        busTempFileStream.write((char *)&b, sizeof(b));
+                    }
+                    else
+                    {
+                        busTempFileStream.write((char *)&b, sizeof(b));
+                    }
+                    busFileStream.read((char *)&b, sizeof(b));
+                }
+                busFileStream.close();
+                busTempFileStream.close();
+                remove("buses.dat");
+                rename("bustemp.dat", "buses.dat");
+                chk = 1;
+            }
+            ticketFileStream.read((char *)this, sizeof(*this));
+        }
+        if (chk == 0)
+        {
+            ticketFileStream.close();
+            tempFileStream.close();
+            cout << "\n\t\t\t\t\t\t\t\t\t\tTicket Not Found...!!\n";
+        }
+        else
+        {
+            ticketFileStream.close();
+            tempFileStream.close();
+            remove("tickets.dat");
+            rename("temp.dat", "tickets.dat");
+            cout << "\n\t\t\t\t\t\t\t\t\t\tTicket Cancelled...!!\n";
+        }
+    }
+}
