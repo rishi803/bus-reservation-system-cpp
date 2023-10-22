@@ -12,7 +12,8 @@
 using namespace std;
 
 // GENERATE TICKET
-void Ticket::generateTicket(string n, Bus b) {
+void Ticket::generateTicket(string n, Bus b)
+{
     name = n;
     pnrNo = generatePNR(99999);
     date = getCurrentDate();
@@ -61,9 +62,9 @@ void Ticket::bookTicket()
     {
         cout << "\n\t\t\t\t\t\t\t\t\t\tEnter Source:-> ";
         cin.ignore();
-        getline(cin,from);
+        getline(cin, from);
         cout << "\n\t\t\t\t\t\t\t\t\t\tEnter Destination:-> ";
-        getline(cin,to);
+        getline(cin, to);
 
         system("cls");
         printHeading("AVAILABLE BUSES");
@@ -71,14 +72,14 @@ void Ticket::bookTicket()
         busFileStream.read((char *)&b, sizeof(b));
         while (!busFileStream.eof())
         {
-             string user_from = b.getSource();
+            string user_from = b.getSource();
             string user_to = b.getDestination();
 
-    // Convert both strings to lowercase
-    transform(user_from.begin(), user_from.end(), user_from.begin(), ::tolower);
-    transform(user_to.begin(), user_to.end(), user_to.begin(), ::tolower);
+            // Convert both strings to lowercase
+            transform(user_from.begin(), user_from.end(), user_from.begin(), ::tolower);
+            transform(user_to.begin(), user_to.end(), user_to.begin(), ::tolower);
 
-            if ((user_from == from) && (user_to == to) )
+            if ((user_from == from) && (user_to == to))
             {
                 b.showBusDetails();
                 chk = 1;
@@ -98,7 +99,7 @@ void Ticket::bookTicket()
             int booked = 0;
 
             cout << "\n\t\t\t\t\t\t\t\t\t\tEnter Bus Number:-> ";
-            getline(cin,bNo);
+            getline(cin, bNo);
 
             busFileStream.open("buses.dat", ios::in | ios::app | ios::binary);
             tempFileStream.open("temp.dat", ios::out | ios::app | ios::binary);
@@ -107,13 +108,13 @@ void Ticket::bookTicket()
             while (!busFileStream.eof())
             {
                 string user_from = b.getSource();
-            string user_to = b.getDestination();
+                string user_to = b.getDestination();
 
-    // Convert both strings to lowercase
-    transform(user_from.begin(), user_from.end(), user_from.begin(), ::tolower);
-    transform(user_to.begin(), user_to.end(), user_to.begin(), ::tolower);
+                // Convert both strings to lowercase
+                transform(user_from.begin(), user_from.end(), user_from.begin(), ::tolower);
+                transform(user_to.begin(), user_to.end(), user_to.begin(), ::tolower);
 
-                if ((user_from == from) && (user_to == to) && (b.getBusNo() == bNo) )
+                if ((user_from == from) && (user_to == to) && (b.getBusNo() == bNo))
                 {
                     if (b.getBookedSeats() >= 32)
                     {
@@ -126,7 +127,7 @@ void Ticket::bookTicket()
                         printHeading("BOOK TICKET");
                         string n;
                         cout << "\n\t\t\t\t\t\t\t\t\t\tEnter Customer Name :-> ";
-                        getline(cin,n);
+                        getline(cin, n);
                         b.setBookedSeats();
                         generateTicket(n, b);
                         ticketFileStream.open("tickets.dat", ios::out | ios::app | ios::binary);
@@ -173,7 +174,7 @@ void Ticket::cancelTicket()
     printHeading("CANCEL TICKET");
     cout << "\n\t\t\t\t\t\t\t\t\t\tEnter PNR Number:-> ";
     cin.ignore();
-    getline(cin,pnr);
+    getline(cin, pnr);
 
     ticketFileStream.open("tickets.dat", ios::in | ios::app | ios::binary);
     tempFileStream.open("temp.dat", ios::out | ios::app | ios::binary);
@@ -250,7 +251,7 @@ void Ticket::editTicket()
     printHeading("EDIT TICKET");
     cout << "\n\t\t\t\t\t\t\t\t\t\tEnter PNR Number:-> ";
     cin.ignore();
-    getline(cin,pnr);
+    getline(cin, pnr);
 
     ticketFileStream.open("tickets.dat", ios::in | ios::app | ios::binary);
 
@@ -274,7 +275,7 @@ void Ticket::editTicket()
                 displayTicket();
                 string n;
                 cout << "\n\t\t\t\t\t\t\t\t\t\tEnter Passenger Name :-> ";
-                getline(cin,n);
+                getline(cin, n);
                 setName(n);
                 tempFileStream.write((char *)this, sizeof(*this));
 
@@ -300,5 +301,49 @@ void Ticket::editTicket()
         tempFileStream.close();
         remove("tickets.dat");
         rename("temp.dat", "tickets.dat");
+    }
+}
+
+
+// SHOW TICKET BY PNR
+void Ticket::showTicketsByPNR()
+{
+    system("cls");
+
+    string pnr;
+    int chk = 0;
+    fstream ticketFileStream;
+
+    printHeading("SHOW BOOKINGS BY PNR");
+    cout << "\n\t\t\t\t\t\t\t\t\t\tEnter PNR Number:-> ";
+    cin.ignore();
+    getline(cin,pnr);
+
+    system("cls");
+
+    printHeading("BOOKINGS");
+
+    ticketFileStream.open("tickets.dat", ios::in | ios::app | ios::binary);
+    if (ticketFileStream.fail())
+    {
+        cout << "\n\t\t\t\t\t\t\t\t\t\tCan't Open File...!!\n";
+    }
+     else
+    {
+        ticketFileStream.read((char *)this, sizeof(*this));
+        while (!ticketFileStream.eof())
+        {
+            if ((getPnrNo() == pnr))
+            {
+                displayTicket();
+                chk = 1;
+            }
+            ticketFileStream.read((char *)this, sizeof(*this));
+        }
+        if (chk == 0)
+        {
+            cout << "\n\t\t\t\t\t\t\t\t\t\tNo Bookings...!!\n";
+        }
+        ticketFileStream.close();
     }
 }
