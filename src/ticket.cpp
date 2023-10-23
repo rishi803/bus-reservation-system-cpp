@@ -347,3 +347,48 @@ void Ticket::showTicketsByPNR()
         ticketFileStream.close();
     }
 }
+
+
+// SHOW TICKET BY NAME
+void Ticket::showTicketsByName()
+{
+    system("cls");
+
+    string name;
+    int chk = 0;
+    fstream ticketFileStream;
+
+    printHeading("SHOW BOOKINGS BY NAME");
+    cout << "\n\t\t\t\t\t\t\t\t\t\tEnter Passenger Name:-> ";
+    cin.ignore();
+    getline(cin,name);
+
+    system("cls");
+
+    printHeading("BOOKINGS");
+
+    ticketFileStream.open("tickets.dat", ios::in | ios::app | ios::binary);
+    if (ticketFileStream.fail())
+    {
+        cout << "\n\t\t\t\t\t\t\t\t\t\tCan't Open File...!!\n";
+    }
+
+    else
+    {
+        ticketFileStream.read((char *)this, sizeof(*this));
+        while (!ticketFileStream.eof())
+        {
+            if (getName() == name)
+            {
+                displayTicket();
+                chk = 1;
+            }
+            ticketFileStream.read((char *)this, sizeof(*this));
+        }
+        if (chk == 0)
+        {
+            cout << "\n\t\t\t\t\t\t\t\t\t\tNo Bookings...!!\n";
+        }
+        ticketFileStream.close();
+    }
+}
