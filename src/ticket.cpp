@@ -392,3 +392,56 @@ void Ticket::showTicketsByName()
         ticketFileStream.close();
     }
 }
+
+
+// SHOW TICKET BY SOURCE
+void Ticket::showTicketsBySource()
+{
+    system("cls");
+
+    string s;
+    int chk = 0;
+    fstream ticketFileStream;
+
+    printHeading("SHOW BOOKINGS BY SOURCE");
+    cout << "\n\t\t\t\t\t\t\t\t\t\tEnter Source:-> ";
+    cin.ignore();
+    getline(cin,s);
+
+    system("cls");
+
+    printHeading("BOOKINGS");
+
+    ticketFileStream.open("tickets.dat", ios::in | ios::app | ios::binary);
+    if (ticketFileStream.fail())
+    {
+        cout << "\n\t\t\t\t\t\t\t\t\t\tCan't Open File...!!\n";
+    }
+
+    else
+    {
+        ticketFileStream.read((char *)this, sizeof(*this));
+
+        string user_source = s;
+        string saved_source = bus.getSource();
+
+            // Convert both strings to lowercase
+    std::transform(user_source.begin(), user_source.end(), user_source.begin(), ::tolower);
+    std::transform(saved_source.begin(), saved_source.end(), saved_source.begin(), ::tolower);
+
+        while (!ticketFileStream.eof())
+        {
+            if ((saved_source == user_source) )
+            {
+                displayTicket();
+                chk = 1;
+            }
+            ticketFileStream.read((char *)this, sizeof(*this));
+        }
+        if (chk == 0)
+        {
+            cout << "\n\t\t\t\t\t\t\t\t\t\tNo Bookings...!!\n";
+        }
+        ticketFileStream.close();
+    }
+}
