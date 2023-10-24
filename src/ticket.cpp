@@ -498,3 +498,30 @@ void Ticket::showTicketsByDestination()
         ticketFileStream.close();
     }
 }
+
+// show all booked tickets
+
+void Ticket::showAllTickets(){
+    system("cls");
+    fstream ticketFileStream;
+
+    system("cls");
+
+    printHeading("BOOKINGS");
+
+    ticketFileStream.open("tickets.dat", ios::in | ios::app | ios::binary);
+
+    if(!ticketFileStream){
+         cout << "\n\t\t\t\t\t\t\t\t\t\tCan't Open File...!!\n";
+    }
+
+    else{
+          ticketFileStream.read((char *)this, sizeof(*this));
+        while (!ticketFileStream.eof())
+        {
+            displayTicket();
+            ticketFileStream.read((char *)this, sizeof(*this));
+        }
+        ticketFileStream.close();
+    }
+}
