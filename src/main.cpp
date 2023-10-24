@@ -2,8 +2,8 @@
 #include <string.h>
 
 #include "bus.cpp"
-#include"utils.h"
-
+#include "ticket.cpp"
+#include "utils.h"
 
 using namespace std;
 
@@ -59,7 +59,7 @@ void mainMenu()
     {
         system("cls");
 
-    
+        printHeading("MAIN MENU");
 
         cout << "\t\t\t\t\t\t\t\t\t\t-------------------------------------------------\n";
         cout << "\t\t\t\t\t\t\t\t\t\t 1. User Menu                                    \n";
@@ -104,7 +104,7 @@ void adminLogin()
 
     system("cls");
 
-    cout<<"--------ADMIN LOGIN--------"<<endl;
+    printHeading("ADMIN LOGIN");
 
     cout << "\n\t\t\t\t\t\t\t\t\t\tEnter AdminID:-> ";
     cin >> adminUname;
@@ -132,9 +132,10 @@ void userMenu()
     while (1)
     {
         system("cls");
+        Ticket t;
 
         // MENU ITEMS
-        cout<<"----------USER MENU------------"<<endl;
+        printHeading("USER MENU");
 
         cout << "\t\t\t\t\t\t\t\t\t\t-------------------------------------------------\n";
         cout << "\t\t\t\t\t\t\t\t\t\t 1. Book Ticket                                  \n";
@@ -146,20 +147,26 @@ void userMenu()
         cout << "\t\t\t\t\t\t\t\t\t\t 4. BACK                                         \n";
         cout << "\t\t\t\t\t\t\t\t\t\t-------------------------------------------------\n";
 
-        cout << "\n\t\t\t\t\t\t\t\t\t\tEnter your choice:-> ";
+        cout << "\n\t\t\t\t\t\t\t\t\t\tPlease Enter your choice:-> ";
 
         cin >> choice;
 
         switch (choice)
         {
         case 1:
-           
+            t.bookTicket();
+            system("pause");
+            break;
 
         case 2:
-            
+            t.showTicketsByPNR();
+            system("pause");
+            break;
 
         case 3:
-           
+            t.cancelTicket();
+            system("pause");
+            break;
 
         case 4:
             system("cls");
@@ -167,7 +174,7 @@ void userMenu()
             break;
 
         default:
-            cout << "\n\t\t\t\t\t  Choose valid option!!! \t\t\t\n";
+            cout << "\n\t\t\t\t\t Please Choose a valid option!!! \t\t\t\n";
             system("pause");
             break;
             userMenu();
@@ -178,15 +185,16 @@ void userMenu()
 // ADMIN MENU FUNCTION
 void adminMenu()
 {
-   
+
     Bus b;
+    Ticket t;
     int choice;
 
     while (1)
     {
         system("cls");
 
-        cout<<"----------ADMIN PORTAL-----------"<<endl;
+        printHeading("ADMIN PORTAL");
 
         cout << "\t\t\t\t\t\t\t\t\t\t-------------------------------------------------\n";
         cout << "\t\t\t\t\t\t\t\t\t\t 1. Add Bus                                      \n";
@@ -227,13 +235,19 @@ void adminMenu()
             break;
 
         case 3:
-            
+            t.bookTicket();
+            system("pause");
+            break;
 
         case 4:
-            
+            t.editTicket();
+            system("pause");
+            break;
 
         case 5:
-           
+            t.cancelTicket();
+            system("pause");
+            break;
 
         case 6:
             viewBookingsMenu();
@@ -250,7 +264,9 @@ void adminMenu()
             break;
 
         case 9:
-          
+            b.deleteBus();
+            system("pause");
+            break;
 
         case 10:
             system("cls");
@@ -268,30 +284,30 @@ void adminMenu()
 // VIEW BOOKINGS MENU FUNCTION
 void viewBookingsMenu()
 {
-   
 
+    Ticket t;
     int choice;
 
     while (1)
     {
         system("cls");
 
-        cout<<"----------VIEW BOOKINGS----------"<<endl;
+        printHeading("VIEW BOOKINGS");
 
         cout << "\t\t\t\t\t\t\t\t\t\t-------------------------------------------------\n";
         cout << "\t\t\t\t\t\t\t\t\t\t 1. By PNR                                      \n";
         cout << "\t\t\t\t\t\t\t\t\t\t-------------------------------------------------\n";
         cout << "\t\t\t\t\t\t\t\t\t\t 2. By Name                                      \n";
         cout << "\t\t\t\t\t\t\t\t\t\t-------------------------------------------------\n";
-        cout << "\t\t\t\t\t\t\t\t\t\t 3. By Bus                                       \n";
+        // cout << "\t\t\t\t\t\t\t\t\t\t 3. By Bus                                       \n";
         cout << "\t\t\t\t\t\t\t\t\t\t-------------------------------------------------\n";
-        cout << "\t\t\t\t\t\t\t\t\t\t 4. By Source                                    \n";
+        cout << "\t\t\t\t\t\t\t\t\t\t 3. By Source                                    \n";
         cout << "\t\t\t\t\t\t\t\t\t\t-------------------------------------------------\n";
-        cout << "\t\t\t\t\t\t\t\t\t\t 5. By Destination                               \n";
+        cout << "\t\t\t\t\t\t\t\t\t\t 4. By Destination                               \n";
         cout << "\t\t\t\t\t\t\t\t\t\t-------------------------------------------------\n";
-        cout << "\t\t\t\t\t\t\t\t\t\t 6. All Bookings                                 \n";
+        cout << "\t\t\t\t\t\t\t\t\t\t 5. All Bookings                                 \n";
         cout << "\t\t\t\t\t\t\t\t\t\t-------------------------------------------------\n";
-        cout << "\t\t\t\t\t\t\t\t\t\t 7. BACK                                         \n";
+        cout << "\t\t\t\t\t\t\t\t\t\t 6. BACK                                         \n";
         cout << "\t\t\t\t\t\t\t\t\t\t-------------------------------------------------\n\n";
 
         cout << "\n\t\t\t\t\t\t\t\t\t\tEnter your choice:-> ";
@@ -301,24 +317,36 @@ void viewBookingsMenu()
         switch (choice)
         {
         case 1:
-           
+            t.showTicketsByPNR();
+            system("pause");
+            break;
 
         case 2:
-           
+            t.showTicketsByName();
+            system("pause");
+            break;
+
+            // case 3:
+            //      t.showTicketsByBus();
+            //     system("pause");
+            //     break;
 
         case 3:
-          
+            t.showTicketsBySource();
+            system("pause");
+            break;
 
         case 4:
-            
+            t.showTicketsByDestination();
+            system("pause");
+            break;
 
         case 5:
-           
+            t.showAllTickets();
+            system("pause");
+            break;
 
         case 6:
-           
-
-        case 7:
             system("cls");
             adminMenu();
             break;
